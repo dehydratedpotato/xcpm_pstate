@@ -20,7 +20,7 @@ typedef struct {
     uint32_t nominal_frequency;
     uint32_t unknown;
     uint32_t reserved;
-} __attribute__((packed)) pstate_t;
+} pstate_t;
 
 typedef struct {
     uint32_t high_frequency_modes_turbo[2];
@@ -29,7 +29,7 @@ typedef struct {
     uint32_t state_count;
 
     pstate_t states[64];
-} __attribute__((packed)) pstate_table_t;
+} pstate_table_t;
 
 int main(int argc, const char * argv[]) {
     if (getuid() != 0) {
