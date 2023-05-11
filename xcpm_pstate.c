@@ -1,9 +1,3 @@
-//
-//  xcpm_pstate.c
-//  xcpm_pstate
-//
-//  Created by BitesPotatoBacks on 11/23/22.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,21 +9,21 @@
 #define XCPM_GET_PSTATE_CTRS 0x2000580D
 #define XCPM_GET_PSTATE_TABLE 0x20005801
 
-struct pstate {
+typedef struct pstate {
     uint32_t pstate_id;
     uint32_t nominal_frequency;
     uint32_t unknown;
     uint32_t reserved;
-};
+} pstate;
 
-struct pstate_table {
+typedef struct pstate_table {
     uint32_t high_frequency_modes_turbo[2];
     uint32_t high_frequency_modes_nonturbo[2];
     uint32_t max_efficent_frequency;
     uint32_t state_count;
 
-    struct pstate states[64];
-};
+    pstate states[64];
+} pstate;
 
 int main(int argc, const char * argv[]) {
     if (getuid() != 0) {
@@ -38,7 +32,7 @@ int main(int argc, const char * argv[]) {
     }
 
     int32_t fd;
-    struct pstate_table *table;
+    pstate_table *table;
     uint32_t pstatecnt;
     uint64_t* ctr_a;
     uint64_t* ctr_b;
@@ -51,7 +45,7 @@ int main(int argc, const char * argv[]) {
     if(fd == -1) perror("read");
     
     // get pstate table
-    table = malloc(sizeof(struct pstate_table));
+    table = malloc(sizeof(pstate_table));
     ioctl(fd, XCPM_GET_PSTATE_TABLE, table, 0);
     
     pstatecnt = table->state_count;
